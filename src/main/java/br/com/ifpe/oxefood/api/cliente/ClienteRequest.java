@@ -23,36 +23,41 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ClienteRequest {
 
-    @NotNull(message = "O Nome é de preenchimento obrigatório") // NotNull Válida se o campo está nulo.
-    @NotEmpty(message = "O Nome é de preenchimento obrigatório") // NotEmpty Válida se o campo está vazio.
+    @NotNull(message = "O Nome é de preenchimento obrigatório")
+    @NotEmpty(message = "O Nome é de preenchimento obrigatório")
     @Length(max = 100, message = "O Nome deverá ter no máximo {max} caracteres")
-
     private String nome;
 
-    @JsonFormat(pattern = "dd/MM/yyyy") //Ele vai esperar a anotação em Dia/Mês/Ano
+    @JsonFormat(pattern = "dd/MM/yyyy") 
     @NotNull(message = "A data de nascimento é obrigatória.")
     @Past(message = "A data de nascimento não pode ser futura.")
     private LocalDate dataNascimento;
 
     @NotBlank(message = "O CPF é de preenchimento obrigatório")
-    @CPF
+    @CPF(message = "CPF inválido")
     private String cpf;
 
+    @NotBlank(message = "O Telefone Celular é de preenchimento obrigatório") 
     private String foneCelular;
 
-    @NotBlank(message = "O Telefone Celular é de preenchimento obrigatório")
-
-    private String foneFixo;
+    private String foneFixo; 
 
     public Cliente build() {
+
+        String cpfLimpo = (this.cpf != null) ? this.cpf.replaceAll("[^0-9]", "") : null;
+
+        // Limpa o foneCelular removendo todos os caracteres não numéricos.
+        String foneCelularLimpo = (this.foneCelular != null) ? this.foneCelular.replaceAll("[^0-9]", "") : null;
+
+        // Limpa o foneFixo removendo todos os caracteres não numéricos.
+        String foneFixoLimpo = (this.foneFixo != null) ? this.foneFixo.replaceAll("[^0-9]", "") : null;
 
         return Cliente.builder()
                 .nome(nome)
                 .dataNascimento(dataNascimento)
-                .cpf(cpf)
-                .foneCelular(foneCelular)
-                .foneFixo(foneFixo)
+                .cpf(cpfLimpo) 
+                .foneCelular(foneCelularLimpo) 
+                .foneFixo(foneFixoLimpo) 
                 .build();
     }
-
 }

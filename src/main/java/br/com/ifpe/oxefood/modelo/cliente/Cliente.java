@@ -5,21 +5,19 @@ import java.util.List;
 
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length; // Importar para @Length
-import org.hibernate.validator.constraints.br.CPF; // Importar para @CPF
 
-import com.fasterxml.jackson.annotation.JsonFormat; // Pode ser útil se a entidade for serializada diretamente
+import com.fasterxml.jackson.annotation.JsonFormat; // Importar para @CPF
 
-import br.com.ifpe.oxefood.util.entity.EntidadeAuditavel;
+import br.com.ifpe.oxefood.util.entity.EntidadeAuditavel; // Pode ser útil se a entidade for serializada diretamente
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty; // Embora @NotBlank seja geralmente preferível para Strings
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull; // Embora @NotBlank seja geralmente preferível para Strings
 import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.Pattern; // Importar para @PastOrPresent
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -53,7 +51,7 @@ public class Cliente extends EntidadeAuditavel {
 
     @Column(unique = true, nullable = false, length = 11) // Adicionei nullable=false e length=11
     @NotBlank(message = "O CPF é de preenchimento obrigatório")
-    @CPF(message = "CPF inválido")
+    // @CPF(message = "CPF inválido")
     private String cpf;
 
     @Column

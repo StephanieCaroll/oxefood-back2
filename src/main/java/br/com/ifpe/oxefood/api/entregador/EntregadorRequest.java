@@ -29,7 +29,6 @@ public class EntregadorRequest {
     private String nome;
 
     @NotBlank(message = "O CPF é obrigatório.")
-    @Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}", message = "O CPF deve estar no formato 000.000.000-00 ou 00000000000.")
     private String cpf;
 
     @NotBlank(message = "O RG é obrigatório.")
@@ -43,10 +42,9 @@ public class EntregadorRequest {
     private LocalDate dataNascimento;
 
     @NotBlank(message = "O telefone celular é obrigatório.")
-    @Pattern(regexp = "^81\\d{9}$", message = "O telefone celular deve começar com '81' e ter 11 dígitos (ex: 81987654321).")
+
     private String foneCelular;
 
-    @Pattern(regexp = "^\\d{10,11}$|^$", message = "O telefone fixo deve ter 10 ou 11 dígitos numéricos ou ser vazio.") // Permite vazio ou com dígitos
     private String foneFixo;
 
     @NotNull(message = "A quantidade de entregas realizadas é obrigatória.")
@@ -77,7 +75,7 @@ public class EntregadorRequest {
     private String enderecoCidade;
 
     @NotBlank(message = "O CEP do endereço é obrigatório.")
-    @Pattern(regexp = "\\d{8}", message = "O CEP deve conter 8 dígitos numéricos.")
+    // @Pattern(regexp = "\\d{8}", message = "O CEP deve conter 8 dígitos numéricos.")
     private String enderecoCep;
 
     @NotBlank(message = "A UF do endereço é obrigatória.")

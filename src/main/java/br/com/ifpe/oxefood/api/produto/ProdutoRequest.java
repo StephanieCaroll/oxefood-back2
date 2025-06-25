@@ -1,8 +1,7 @@
 package br.com.ifpe.oxefood.api.produto;
 
 import br.com.ifpe.oxefood.modelo.produto.Produto;
-import jakarta.validation.constraints.DecimalMax; // Importe este
-import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,7 +32,7 @@ public class ProdutoRequest {
     private String descricao;
 
     @NotNull(message = "O valor unitário é obrigatório.")
-    @DecimalMin(value = "20.00", message = "O valor unitário deve ser no mínimo R$ 20.00.") // Alterado
+    // @DecimalMin(value = "20.00", message = "O valor unitário deve ser no mínimo R$ 20.00.") // Alterado
     @DecimalMax(value = "100.00", message = "O valor unitário deve ser no máximo R$ 100.00.") // Adicionado
     private Double valorUnitario;
 

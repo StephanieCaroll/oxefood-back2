@@ -36,7 +36,7 @@ public class Entregador extends EntidadeAuditavel {
     private String nome;
 
     @NotBlank(message = "O CPF é obrigatório.")
-    @Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}", message = "O CPF deve estar no formato 000.000.000-00 ou 00000000000.")
+    // @Pattern(regexp = "\\d{3}\\.?\\d{3}\\.?\\d{3}-?\\d{2}", message = "O CPF deve estar no formato 000.000.000-00 ou 00000000000.")
     @Column(unique = true) // CPF geralmente é único
     private String cpf;
 
@@ -51,11 +51,11 @@ public class Entregador extends EntidadeAuditavel {
     private LocalDate dataNascimento;
 
     @NotBlank(message = "O telefone celular é obrigatório.")
-    @Pattern(regexp = "^81\\d{9}$", message = "O telefone celular deve começar com '81' e ter 11 dígitos (ex: 81987654321).")
+    // @Pattern(regexp = "^81\\d{9}$", message = "O telefone celular deve começar com '81' e ter 11 dígitos (ex: 81987654321).")
     @Column
     private String foneCelular;
 
-   @Pattern(regexp = "^\\d{10,11}$|^$", message = "O telefone fixo deve ter 10 ou 11 dígitos numéricos ou ser vazio.") // Permite vazio ou com dígitos
+//    @Pattern(regexp = "^\\d{10,11}$|^$", message = "O telefone fixo deve ter 10 ou 11 dígitos numéricos ou ser vazio.") // Permite vazio ou com dígitos
     @Column
     private String foneFixo;
 
@@ -94,7 +94,7 @@ public class Entregador extends EntidadeAuditavel {
     private String enderecoCidade;
 
     @NotBlank(message = "O CEP do endereço é obrigatório.")
-    @Pattern(regexp = "\\d{8}", message = "O CEP deve conter 8 dígitos numéricos.")
+    // @Pattern(regexp = "\\d{8}", message = "O CEP deve conter 8 dígitos numéricos.")
     @Column
     private String enderecoCep;
 
