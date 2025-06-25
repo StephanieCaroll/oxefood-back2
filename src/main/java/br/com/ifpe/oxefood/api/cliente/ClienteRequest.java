@@ -4,9 +4,11 @@ import java.time.LocalDate;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
-
+import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
+import jakarta.validation.constraints.Email;
+import br.com.ifpe.oxefood.modelo.acesso.Perfil;
+import br.com.ifpe.oxefood.modelo.acesso.Usuario;
 import br.com.ifpe.oxefood.modelo.cliente.Cliente;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -28,7 +30,7 @@ public class ClienteRequest {
     @Length(max = 100, message = "O Nome deverá ter no máximo {max} caracteres")
     private String nome;
 
-    @JsonFormat(pattern = "dd/MM/yyyy") 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull(message = "A data de nascimento é obrigatória.")
     @Past(message = "A data de nascimento não pode ser futura.")
     private LocalDate dataNascimento;
@@ -37,10 +39,25 @@ public class ClienteRequest {
     @CPF(message = "CPF inválido")
     private String cpf;
 
-    @NotBlank(message = "O Telefone Celular é de preenchimento obrigatório") 
+    @NotBlank(message = "O Telefone Celular é de preenchimento obrigatório")
     private String foneCelular;
 
-    private String foneFixo; 
+    private String foneFixo;
+
+    @NotBlank(message = "O e-mail é de preenchimento obrigatório")
+    @Email
+    private String email;
+
+    @NotBlank(message = "A senha é de preenchimento obrigatório")
+    private String password;
+
+    public Usuario buildUsuario() {
+        return Usuario.builder()
+                .username(email)
+                .password(password)
+                .roles(Arrays.asList(new Perfil(Perfil.ROLE_CLIENTE)))
+                .build();
+    }
 
     public Cliente build() {
 
@@ -53,11 +70,12 @@ public class ClienteRequest {
         String foneFixoLimpo = (this.foneFixo != null) ? this.foneFixo.replaceAll("[^0-9]", "") : null;
 
         return Cliente.builder()
+                .usuario(buildUsuario())
                 .nome(nome)
                 .dataNascimento(dataNascimento)
-                .cpf(cpfLimpo) 
-                .foneCelular(foneCelularLimpo) 
-                .foneFixo(foneFixoLimpo) 
+                .cpf(cpfLimpo)
+                .foneCelular(foneCelularLimpo)
+                .foneFixo(foneFixoLimpo)
                 .build();
     }
 }

@@ -3,16 +3,21 @@ package br.com.ifpe.oxefood.modelo.cliente;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length; // Importar para @Length
 
 import com.fasterxml.jackson.annotation.JsonFormat; // Importar para @CPF
 
+import br.com.ifpe.oxefood.modelo.acesso.Usuario;
 import br.com.ifpe.oxefood.util.entity.EntidadeAuditavel; // Pode ser útil se a entidade for serializada diretamente
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -34,7 +39,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Cliente extends EntidadeAuditavel {
 
+    @OneToOne
+    @JoinColumn(nullable = false)
+    private Usuario usuario;
+
     @OneToMany(mappedBy = "cliente", orphanRemoval = true, fetch = FetchType.EAGER)
+    @Fetch(FetchMode.SUBSELECT)
     private List<EnderecoCliente> enderecos;
 
     @Column(nullable = false, length = 100)
@@ -55,7 +65,7 @@ public class Cliente extends EntidadeAuditavel {
     private String cpf;
 
     @Column
-   
+
     private String foneCelular;
 
     @Column
