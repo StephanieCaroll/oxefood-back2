@@ -2,21 +2,25 @@ package br.com.ifpe.oxefood.modelo.cliente;
 
 import java.util.ArrayList;
 import java.util.List;
-import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ifpe.oxefood.modelo.acesso.Perfil;
 import br.com.ifpe.oxefood.modelo.acesso.PerfilRepository;
+import br.com.ifpe.oxefood.modelo.acesso.Usuario;
+import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
 import jakarta.transaction.Transactional;
 
-@Service //Faz a classe ser um serviço
+@Service // Faz a classe ser um serviço
 public class ClienteService {
 
-    @Autowired //Instanciar um objeto de forma que eu possar usar os metodos e atributos dessa classe
+    @Autowired // Instanciar um objeto de forma que eu possar usar os metodos e atributos dessa
+               // classe
     private ClienteRepository repository;
 
-    @Autowired //Instanciar um objeto de forma que eu possar usar os metodos e atributos dessa classe
+    @Autowired // Instanciar um objeto de forma que eu possar usar os metodos e atributos dessa
+               // classe
     private EnderecoClienteRepository enderecoClienteRepository;
 
     @Autowired
@@ -25,8 +29,8 @@ public class ClienteService {
     @Autowired
     private PerfilRepository perfilUsuarioRepository;
 
-    @Transactional //Se um falhar as outras seram desfeitas e não seram gravadas no banco 
-    public Cliente save(Cliente cliente) { //Recebe o objeto cliente que ele vai salvar no banco
+    @Transactional // Se um falhar as outras seram desfeitas e não seram gravadas no banco
+    public Cliente save(Cliente cliente, Usuario usuarioLogado) { // Recebe o objeto cliente que ele vai salvar no banco
 
         usuarioService.save(cliente.getUsuario());
 
@@ -36,11 +40,12 @@ public class ClienteService {
         }
 
         cliente.setHabilitado(Boolean.TRUE);
+        cliente.setCriadoPor(usuarioLogado);
         return repository.save(cliente);
 
-        //Ou voce pode fazer
-        //Cliente c = repository.save(cliente);
-        //return c;
+        // Ou voce pode fazer
+        // Cliente c = repository.save(cliente);
+        // return c;
     }
 
     public List<Cliente> listarTodos() {
@@ -54,25 +59,27 @@ public class ClienteService {
     }
 
     @Transactional
-    public void update(Long id, Cliente clienteAlterado) {
+    public void update(Long id, Cliente clienteAlterado, Usuario usuarioLogado) {
 
-        Cliente cliente = repository.findById(id).get(); //Consultar no banco o cliente
+        Cliente cliente = repository.findById(id).get(); // Consultar no banco o cliente
         cliente.setNome(clienteAlterado.getNome());
         cliente.setDataNascimento(clienteAlterado.getDataNascimento());
         cliente.setCpf(clienteAlterado.getCpf());
         cliente.setFoneCelular(clienteAlterado.getFoneCelular());
         cliente.setFoneFixo(clienteAlterado.getFoneFixo());
+        cliente.setUltimaModificacaoPor(usuarioLogado);
 
-        repository.save(cliente); //Função para cadastra e alterar objeto
+        repository.save(cliente); // Função para cadastra e alterar objeto
     }
 
-    @Transactional //Toda vez que for mexer no banco utilizar o transactional
+    @Transactional // Toda vez que for mexer no banco utilizar o transactional
     public void delete(Long id) {
 
         Cliente cliente = repository.findById(id).get();
         cliente.setHabilitado(Boolean.FALSE);
 
-        repository.save(cliente); //Na verdade está sendo alterado se realmente fosse deletado em vez de save seria o delete
+        repository.save(cliente); // Na verdade está sendo alterado se realmente fosse deletado em vez de save
+                                  // seria o delete
     }
 
     @Transactional
@@ -80,12 +87,12 @@ public class ClienteService {
 
         Cliente cliente = this.obterPorID(clienteId);
 
-        //Primeiro salva o EnderecoCliente:
+        // Primeiro salva o EnderecoCliente:
         endereco.setCliente(cliente);
         endereco.setHabilitado(Boolean.TRUE);
         enderecoClienteRepository.save(endereco);
 
-        //Depois acrescenta o endereço criado ao cliente e atualiza o cliente:
+        // Depois acrescenta o endereço criado ao cliente e atualiza o cliente:
         List<EnderecoCliente> listaEnderecoCliente = cliente.getEnderecos();
 
         if (listaEnderecoCliente == null) {

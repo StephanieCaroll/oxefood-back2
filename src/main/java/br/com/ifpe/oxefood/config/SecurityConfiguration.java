@@ -56,7 +56,8 @@ public class SecurityConfiguration {
 
                         .requestMatchers(HttpMethod.PUT, "/api/produto/*").hasAnyAuthority(
                         Perfil.ROLE_FUNCIONARIO_ADMIN,
-                        Perfil.ROLE_FUNCIONARIO_USER) //Alteração de produto
+                        Perfil.ROLE_FUNCIONARIO_USER,
+                        Perfil.ROLE_CLIENTE) //Alteração de produto
     
                         .requestMatchers(HttpMethod.DELETE, "/api/produto/*").hasAnyAuthority(
                         Perfil.ROLE_FUNCIONARIO_ADMIN) //Exclusão de produto
